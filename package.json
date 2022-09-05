@@ -1,0 +1,26 @@
+{
+    "name": "personal-employee-tracker",
+    "version": "1.0.0",
+    "description": "Application to help visualize sql databases",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "githubURL": "https://github.com/dcast0607/Personal-Employee-Tracker"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "homepage": "https://github.com/dcast0607/Personal-Employee-Tracker",
+    "dependencies": {
+      "console.table": "^0.10.0",
+      "dotenv": "^16.0.1",
+      "inquirer": "^8.2.4",
+      "mysql": "^2.18.1",
+      "mysql2": "^2.3.3",
+      "nodemon": "^2.0.16",
+      "util": "^0.12.4"
+    }
+}
