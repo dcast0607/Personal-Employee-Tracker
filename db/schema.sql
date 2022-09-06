@@ -12,9 +12,9 @@ CREATE TABLE department (
 );
 
 CREATE TABLE employee (
-    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    first_name VARCHAR(30) VARCHAR NOT NULL,
-    last_name VARCHAR(30) VARCHAR NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
     role_id INT,
     manager_id INT
 );

@@ -6,10 +6,10 @@ require('dotenv').config();
 const db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: 'root',
+    password: 'rootroot',
     database: "employeesDB"
 })
 
-dq.query = util.promisify(db.query);
+db.query = util.promisify(db.query);
 
 module.exports = db;
