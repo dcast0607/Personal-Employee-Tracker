@@ -1,6 +1,4 @@
--- Will add seed data here: 
-
-INSER INTO departname (name) 
+INSERT INTO department (name) 
 VALUES 
     ("Sales"),
     ("Custom Support"),
@@ -19,10 +17,10 @@ VALUES
     ("Sales Manager", 70000, 1),
     ("Finance Manager", 90000, 5),
     ("Custom Support Agent", 45000, 2),
-    ("Recruiter", 40000, 4);
+    ("Recruiter", 40000, 4),
     ("Office Manager", 70000, 1);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id);
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
     ("Angela", "Martin", 1, 1),
     ("Oscar", "Martinez", 1, 1),
