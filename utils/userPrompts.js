@@ -1,42 +1,74 @@
 const inquirer = require('inquirer');
+const databaseQueries = require('./databaseQueries');
 
 
 const userPrompts = () => {
 
-    const exitApplication = async() = {
-        // TODO: Add logic to close application when user enters exit as their choice. 
-    };
-
     const fetchDepartments = async() => {
-        fetchAllDepartments();
+       const departmentsData = await databaseQueries.fetchAllDepartments()
+       .then((data) => {
+        console.table(data);
+        console.log("--------------------------------------------------------");
+       })
+       .catch((err) => {
+         console.log(err);
+       });
+       navMenu();
     };
 
     const fetchRoles = async () => {
-        fetchAllRoles();
+        const rolesData = await databaseQueries.fetchAllRoles()
+        .then((data) => {
+            console.table(data);
+            console.log("--------------------------------------------------------");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+        navMenu();
     };
 
     const fetchEmployees = async() => {
-        fetchAllEmployees();
+        const employeesData = await databaseQueries.fetchAllEmployees()
+        .then((data) => {
+            console.table(data);
+            console.log("--------------------------------------------------------");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
 
-    const createDepartment = async () => {
-        inquirer
-            .prompt(
-                [
-                    {
-                        type: 'input',
-                        name: 'department',
-                        message: 'Please enter the name of the department: '
-                    }
-                ]
-            )
-            .then((departmentName) => {
-                addDepartment(departmentName);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+    const createDepartment = async (departmentName) => {
+        const departmentData = await databaseQueries.addDepartment(departmentName)
+        .then(() => {
+            console.log("Adding department to database...");
+            fetchDepartments();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
+
+    const createDepartmentPrompts = async() => {
+        inquirer
+        .prompt(
+            [
+                {
+                    type: 'input',
+                    name: 'department',
+                    message: 'Please enter the name of the department: '
+                }
+            ]
+        )
+        .then((data) => {
+            createDepartment(data.department);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    };
+
 
 
     const navMenu = () => {
@@ -73,11 +105,11 @@ const userPrompts = () => {
                         break;
                     case "View All Employees": fetchEmployees();
                         break;
-                    case "Add a Department": createDepartment();
+                    case "Add a Department": createDepartmentPrompts();
                         break;
-                    case "Add a Role": createRole();
+                    case "Add a Role": createRolePrompts();
                         break;
-                    case "Add an Employee": createEmployee();
+                    case "Add an Employee": createEmployeePrompts();
                         break;
                     case "Update an Employee Role": updateExistingEmployeeRolePrompts();
                         break;
@@ -92,10 +124,11 @@ const userPrompts = () => {
                     case "View Department Budget": fetchBudgetByDepartmentPrompts();
                         break;
                     default: 
-                        exitApplication();
+                        return userSelection;
                 }
             });
     };
+    navMenu();
 };
 
-module.exports = userPrompts;
+userPrompts();
