@@ -40,15 +40,21 @@ const userPrompts = () => {
     };
 
     const createDepartment = async (departmentName) => {
-        const departmentData = await databaseQueries.addDepartment(departmentName)
-        .then(() => {
-            console.log("Adding department to database...");
-            fetchDepartments();
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+        if (departmentName) {
+            const departmentData = await databaseQueries.addDepartment(departmentName)
+            .then(() => {
+                console.log("Adding department to database...");
+                fetchDepartments();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        } else {
+            console.log('\x1b[31m%s\x1b[0m', "Whoops, please make sure that you add a department name!");
+            navMenu();
+        }
     };
+
 
     const createDepartmentPrompts = async() => {
         inquirer
@@ -56,19 +62,174 @@ const userPrompts = () => {
             [
                 {
                     type: 'input',
-                    name: 'department',
-                    message: 'Please enter the name of the department: '
+                    name: 'departmentName',
+                    message: "Please enter the name of the department you would like to add: "
                 }
             ]
         )
         .then((data) => {
-            createDepartment(data.department);
+            createDepartment(data.departmentName);
         })
         .catch((err) => {
             console.log(err);
-        })
+        });
     };
 
+    const createRole = async(title, salary, department_id) => {
+
+        if (title && salary && department_id) {
+            const roleData = await databaseQueries.addRole(title, salary, department_id)
+            .then(() => {
+                console.log("Adding role to database...");
+                fetchRoles();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        } else {
+            console.log('\x1b[31m%s\x1b[0m', "Whoops you need to make you that you have added a title, salary, and department ID!");
+            navMenu();
+        }
+
+    };
+
+    const createRolePrompts = async() => {
+
+        const createRoleData = await databaseQueries.fetchAllDepartments()
+        .then((data) => {
+            console.table(data);
+        })
+        .then(() => {
+            inquirer
+            .prompt(
+                [
+                    {
+                        type: 'input',
+                        name: 'title',
+                        message: 'Please enter the title of the role:  '
+                    },
+                    {
+                        type: 'input',
+                        name: 'salary',
+                        message: 'Please enter the salary of the role: '
+                    },
+                    {
+                        type: 'input',
+                        name: 'department_id',
+                        message: `Please enter a department ID for the role:(You may refer to the table above for the ID) `
+                    }
+                ]
+            )
+            .then((data) => {
+                createRole(data.title, data.salary, data.department_id);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    };
+
+    // TODO: Refactor to display roles table for reference and maybe employees table.
+    const createEmployee = async(first_name, last_name, role_id, manager_id) => {
+        if (first_name && last_name) {
+            console.log(first_name + ' ' + last_name);
+            if (role_id && manager_id) {
+                databaseQueries.addEmployee(first_name, last_name, role_id, manager_id);
+                console.log("Adding employee to database...");
+                fetchEmployees();
+            } else if (role_id) {
+                manager_id = null;
+                databaseQueries.addEmployee(first_name, last_name, role_id, manager_id);
+                console.log("Adding employee to database...");
+                fetchEmployees();
+            } else if (manager_id) {
+                role_id = null;
+                databaseQueries.addEmployee(first_name, last_name, role_id, manager_id);
+                console.log("Adding employee to database...");
+                fetchEmployees();
+            } else {
+                manager_id = null;
+                role_id = null;
+                databaseQueries.addEmployee(first_name, last_name, role_id, manager_id);
+                console.log("Adding employee to database...");
+                fetchEmployees();
+            }
+        } else {
+            console.log('\x1b[31m%s\x1b[0m', 'You must provide at least a first name and last name. Please try again.');
+        }
+    }; 
+
+    //TODO: Add logic to display employee + role's table. 
+   const createEmployeePrompts = async() => {
+         inquirer
+             .prompt(
+                 [
+                     {
+                         type: 'input',
+                         name: 'first_name',
+                         message: 'Please enter the first name of the employee: '
+                     },
+                     {
+                        type: 'input',
+                        name: 'last_name',
+                        message: 'Please enter the last name of the employee: '
+                     },
+                     {
+                        type: 'input',
+                        name: 'role_id',
+                        message: 'Please enter the role ID of the employee:(if available) '
+                     },
+                     {
+                        type: 'input',
+                        name: 'manager_id',
+                        message: 'Please enter the manager ID of the employee:(if available) '
+                     }
+                 ]
+             )
+             .then((data) => {
+                createEmployee(data.first_name, data.last_name, data.role_id, data.manager_id);
+             })
+             .catch((err) => {
+                console.log(err);
+             });
+     };  
+
+
+    const updateExistingEmployeeRolePrompts = async () => {
+        const userData = await databaseQueries.fetchAllEmployees()
+        .then((data) => {
+            console.table(data);
+        })
+        .then(() => {
+            inquirer
+                .prompt (
+                    [
+                        {
+                            type: 'input',
+                            name: 'employeeID',
+                            message: 'Please enter the employee ID of the employee that you wish to update:(Refer to the table above to retrieve the ID) '
+                        }, 
+                        {
+                            type: 'input',
+                            name: 'newEmployeeRoleID',
+                            message: 'Please enter the new employee role ID: '
+                        }
+                    ]
+                )
+                .then((data) => {
+                    console.log(data.employeeID);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    };
 
 
     const navMenu = () => {
@@ -130,5 +291,6 @@ const userPrompts = () => {
     };
     navMenu();
 };
+
 
 userPrompts();
