@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prompts": "node ./utils/userPrompts.js"
+        "prompts": "node ./utils/userPrompts.js",
+        "start": "node ./utils/userPrompts.js"
     },
     "repository": {
         "type": "git",
