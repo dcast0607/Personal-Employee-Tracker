@@ -56,6 +56,8 @@ We added some validation when it comes to the user prompts so you shouldn't run 
 
 ## Demo
 
+- Full Demo Walkthrough: https://www.loom.com/share/75367eae3a5d49f3b3afd1da50211fee
+
 ## Licensing
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)</br>
 ![License: Inquirer](https://img.shields.io/badge/License-Inquirer-red)</br>
