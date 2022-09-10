@@ -132,7 +132,6 @@ const userPrompts = () => {
         });
     };
 
-    // TODO: Refactor to display roles table for reference and maybe employees table.
     const createEmployee = async(first_name, last_name, role_id, manager_id) => {
         if (first_name && last_name) {
             console.log(first_name + ' ' + last_name);
@@ -162,40 +161,49 @@ const userPrompts = () => {
         }
     }; 
 
-    //TODO: Add logic to display employee + role's table. 
    const createEmployeePrompts = async() => {
-         inquirer
-             .prompt(
-                 [
-                     {
-                         type: 'input',
-                         name: 'first_name',
-                         message: 'Please enter the first name of the employee: '
-                     },
-                     {
-                        type: 'input',
-                        name: 'last_name',
-                        message: 'Please enter the last name of the employee: '
-                     },
-                     {
-                        type: 'input',
-                        name: 'role_id',
-                        message: 'Please enter the role ID of the employee:(if available) '
-                     },
-                     {
-                        type: 'input',
-                        name: 'manager_id',
-                        message: 'Please enter the manager ID of the employee:(if available) '
-                     }
-                 ]
-             )
-             .then((data) => {
-                createEmployee(data.first_name, data.last_name, data.role_id, data.manager_id);
-             })
-             .catch((err) => {
-                console.log(err);
-             });
-     };  
+
+    const createEmployeePromptData = await databaseQueries.fetchEmployeeAndRolesTables()
+    .then((data) => {
+        console.table(data);
+    })
+    .then(() => {
+        inquirer
+        .prompt(
+            [
+                {
+                    type: 'input',
+                    name: 'first_name',
+                    message: 'Please enter the first name of the employee: '
+                },
+                {
+                   type: 'input',
+                   name: 'last_name',
+                   message: 'Please enter the last name of the employee: '
+                },
+                {
+                   type: 'input',
+                   name: 'role_id',
+                   message: 'Please enter the role ID of the employee:(If available, refer to the table above) '
+                },
+                {
+                   type: 'input',
+                   name: 'manager_id',
+                   message: 'Please enter the manager ID of the employee:(If available, refer to the table above) '
+                }
+            ]
+        )
+        .then((data) => {
+           createEmployee(data.first_name, data.last_name, data.role_id, data.manager_id);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+    };  
 
 
     const updateExistingEmployeeRolePrompts = async () => {
