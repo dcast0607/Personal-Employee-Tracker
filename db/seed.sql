@@ -1,3 +1,15 @@
+/*
+This file holds our seed data, we are using this to populate the database
+with some starter data to make it easier to interact with the database. 
+
+I am adding some diverse data to make sure that I can test a variety of scenarios. 
+*/
+
+
+/*
+INSERT INTO is used to add this data to our database, the database itself follows
+the data patterns setup in our schema. 
+*/
 INSERT INTO department (name) 
 VALUES 
     ("Sales"),
